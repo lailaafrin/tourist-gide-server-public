@@ -56,12 +56,23 @@ async function run() {
     try {
 
         const tourCollection = client.db("tourDb").collection('users');
+        const packageCollection = client.db("tourDb").collection('packages');
 
+
+        // package
+        
+
+        app.get('/packageAll', async (req, res) => {
+
+            const result = await packageCollection.find().toArray()
+
+            res.send(result);
+        })
 
         // auth related api
         app.post('/jwt', async (req, res) => {
             const user = req.body
-            console.log('I need a new jwt', user)
+            // console.log('I need a new jwt', user)
             const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
                 expiresIn: '30d',
             })
