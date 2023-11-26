@@ -5,7 +5,7 @@ const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const jwt = require('jsonwebtoken')
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 
 const port = process.env.PORT || 5000
@@ -69,6 +69,37 @@ async function run() {
             res.send(result);
         })
 
+        // user email
+        // app.get('/packageAll/:email', async (req, res) => {
+        //     const email = req.params.email
+
+        //     const result = await packageCollection.find({email:email}).toArray();
+        //     res.send(result);
+        // });
+
+
+        app.get('/packageAll/:email', async (req, res) => {
+
+            let query = {};
+
+            if (req.query?.email) {
+                query = { email: req.query.email };
+            }
+            const result = await packageCollection.find(query).toArray();
+            res.send(result);
+        });
+
+        // single package details
+        app.get('/packageAll/:id', async (req, res) => {
+
+            const id= req.params.id
+            const result = await packageCollection.findOne({ _id: new ObjectId(id)})
+
+            res.send(result);
+        })
+
+       
+
         // auth related api
         app.post('/jwt', async (req, res) => {
             const user = req.body
@@ -103,6 +134,15 @@ async function run() {
 
 
         // Save or modify user email, status in DB
+
+// user role
+        app.get('/user/:email', async (req, res) => {
+            const email = req.params.email
+            const result = await tourCollection.findOne({ email })
+            res.send(result)
+        })
+
+
         app.put('/user/:email', async (req, res) => {
             const email = req.params.email
             const user = req.body
