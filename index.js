@@ -14,7 +14,14 @@ const port = process.env.PORT || 5000
 
 
 const corsOptions = {
-    origin: [ 'http://localhost:5173' ],
+    origin: [
+        
+        'http://localhost:5173'
+        
+        // 'https://tour-as-12.web.app',
+
+        // 'https://tour-as-12.firebaseapp.com/'
+    ],
     credentials: true,
     optionSuccessStatus: 200,
 }
@@ -77,8 +84,17 @@ async function run() {
         //     res.send(result);
         // });
 
+        // single package details
+        app.get('/packageAll/:id', async (req, res) => {
 
-        app.get('/packageAll/:email', async (req, res) => {
+            const id = req.params.id
+            const result = await packageCollection.findOne({ _id: new ObjectId(id) })
+
+            res.send(result);
+        })
+
+
+        app.get('/package/:email', async (req, res) => {
 
             let query = {};
 
@@ -89,14 +105,7 @@ async function run() {
             res.send(result);
         });
 
-        // single package details
-        app.get('/packageAll/:id', async (req, res) => {
-
-            const id= req.params.id
-            const result = await packageCollection.findOne({ _id: new ObjectId(id)})
-
-            res.send(result);
-        })
+        
 
        
 
