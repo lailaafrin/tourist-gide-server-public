@@ -64,6 +64,7 @@ async function run() {
 
         const tourCollection = client.db("tourDb").collection('users');
         const packageCollection = client.db("tourDb").collection('packages');
+        const bookCollection = client.db("tourDb").collection('books');
 
 
         // package
@@ -141,6 +142,12 @@ async function run() {
             }
         })
 
+        // book
+        app.post('/booking', async (req, res) => {
+            const packageItem = req.body;
+            const result = await bookCollection.insertOne(packageItem);
+            res.send(result)
+        })
 
         // Save or modify user email, status in DB
 
